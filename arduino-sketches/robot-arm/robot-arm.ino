@@ -3,14 +3,16 @@
 #include <stdlib.h>
 
 /*    MODIFICARE I NUMERI DEI PIN   */
-#define STEPPER_0_STEP 8
-#define STEPPER_0_DIR 3
-#define STEPPER_1_STEP 0
-#define STEPPER_1_DIR 0
+#define STEPPER_0_STEP 2
+#define STEPPER_0_DIR 5
+#define STEPPER_1_STEP 3
+#define STEPPER_1_DIR 6
 #define STEPPER_2_STEP 0
 #define STEPPER_2_DIR 0
 #define STEPPER_3_STEP 0
 #define STEPPER_3_DIR 0
+
+#define ENABLE 8
 
 #define NUM_MOTORS 4
 
@@ -25,18 +27,20 @@ struct ArmPosition {
   float theta0;  // Base
   float theta1;  // Primo snodo (alla base)
   float theta2;  // Secondo snodo
-  float theta3;  // Rotazione avambraccio
 };
 
 // Configurazione dei driver
 const float angle_for_step = 1.8;  // 1.8° per step con i nema 17
-const int microsteps = 8;  // 1=full step, 2=half step, 4=quarter step.... 
-const float steps_per_degree = (1.0 / angle_for_step) * microsteps; // Step per grado
+const int microsteps = 1;  // 1=full step, 2=half step, 4=quarter step.... 
+const float reduction_ratio = 1.45;  // DA VERIFICARE!!
+const float steps_per_degree = (1.0 / angle_for_step) * microsteps * reduction_ratio; // Step per grado
 long max_speed = 200;  // Velocità massima (step/secondo)
 long max_accel = 200;  // Accelerazione (step/secondo²)
 
+const float L1_size = 13.2, L2_size = 14.6;
+
 // Angoli dei motori
-ArmPosition angles = (ArmPosition) {0, 0, 0, 0};
+ArmPosition angles = (ArmPosition) {0, 0, 0};
 
 bool isValidInt(String str, int &num) {
   char *endptr;
@@ -56,7 +60,7 @@ bool isValidFloat(String str, float &num) {
   return (*endptr == '\0'); // Controlla che tutta la stringa sia stata convertita
 }
 
-ArmPosition calcolaAngoli(float X, float Y, float Z, float T3, float L1, float L2) {
+ArmPosition calcolaAngoli(float X, float Y, float Z, float L1, float L2) {
   ArmPosition angoli;
 
   // Calcola angolo della base
@@ -80,22 +84,25 @@ ArmPosition calcolaAngoli(float X, float Y, float Z, float T3, float L1, float L
   float cosTheta2 = (L1 * L1 + L2 * L2 - R * R) / (2 * L1 * L2);
   angoli.theta2 = acos(cosTheta2) * 180.0 / M_PI;
 
-  // Angolo theta3
-  angoli.theta3 = T3;
-
   return angoli;
 }
 
-void setAngle(AccelStepper &s, float position, float degrees) {
-  long target_steps = degrees * steps_per_degree - position; // Converte i gradi in step
-  s.move(target_steps);
+void setAngle(AccelStepper &s, float &positionDeg, float degrees) {
+  // passi totali corrispondenti all'angolo assoluto
+  long targetSteps  = lround(degrees * steps_per_degree);
+  // passi corrispondenti alla posizione corrente
+  long currentSteps = lround(positionDeg * steps_per_degree);
+  // differenza da fare (può essere positivo o negativo)
+  long deltaSteps   = targetSteps - currentSteps;
+
+  s.move(deltaSteps);
+  positionDeg = degrees;  // ora la posizione "corrente" è proprio quell'angolo
 }
 
 void setArmPosition(ArmPosition angles) {
   setAngle(steppers[0], angles.theta0, angles.theta0);
   setAngle(steppers[1], angles.theta1, angles.theta1);
   setAngle(steppers[2], angles.theta2, angles.theta2);
-  setAngle(steppers[3], angles.theta3, angles.theta3);
 }
 
 String command = "";
@@ -106,24 +113,18 @@ bool somethingIsMoving = false;
 
 void setup() {
   for (int i = 0; i < NUM_MOTORS; i++) {
-    steppers[0].setMaxSpeed(max_speed);
-    steppers[0].setAcceleration(max_accel);
+    steppers[i].setMaxSpeed(max_speed);
+    steppers[i].setAcceleration(max_accel);
   }
+
+  pinMode(ENABLE, OUTPUT);
+  digitalWrite(ENABLE, LOW);
   Serial.begin(115200);
 }
 
 void loop() {
-  //setAngle(steppers[0], angles.theta0, 0);
-  steppers[0].moveTo(90);
-  while (steppers[0].distanceToGo() != 0) { steppers[0].run(); }
-  //setAngle(steppers[0], angles.theta0, 90);
-  steppers[0].moveTo(0);
-  while (steppers[0].distanceToGo() != 0) { steppers[0].run(); }
-
-  /*for (int i = 0; i < NUM_MOTORS; i++) {
-    if (steppers[i].distanceToGo() != 0) {
-      steppers[i].run();
-      somethingIsMoving = true;
-    }
-  }*/
+  angles.theta0 = Serial.readStringUntil('\t').toFloat();
+  angles.theta1 = Serial.readStringUntil('\t').toFloat();
+  angles.theta2 = Serial.readStringUntil('\t').toFloat();
+  setArmPosition(angles);
 }
