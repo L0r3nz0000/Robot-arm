@@ -34,15 +34,17 @@ try:
   while True:
     pygame.event.pump()  # Necessario per aggiornare gli input
 
-    left_axis_rotation = round(-joystick.get_axis(0), 1) * 20
-    left_axis = round(-joystick.get_axis(4), 1) * 5
-    right_axis = round(-joystick.get_axis(1), 1) * 5
+    left_axis_rotation = round(-joystick.get_axis(0), 1) * 4
+    left_axis = round(-joystick.get_axis(1), 1) * 4
+    right_axis = round(-joystick.get_axis(4), 1) * 4
     
     if left_axis != 0 or right_axis != 0 or left_axis_rotation != 0:
       x += left_axis
+      x = min(max(x, 0), 135)
       y += right_axis
+      y = min(max(y, 0), x)
       z += left_axis_rotation
-      ser.write(f"{int(x+y+z)}\t{x:.2f}\t{y:.2f}\t{z:.2f}\n".encode())
+      ser.write(f"{int(x+y+z)} {x:.2f} {y:.2f} {z:.2f}\n".encode())
       print(f"Invio: {int(x+y+z)}\t{x:.2f}\t{y:.2f}\t{z:.2f}")
     
     time.sleep(0.1)
