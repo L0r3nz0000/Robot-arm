@@ -41,7 +41,7 @@ try:
 
     left_axis_rotation = round(-joystick.get_axis(0), 1) * 4
     left_axis = round(-joystick.get_axis(1), 1) * 4
-    right_axis = round(-joystick.get_axis(4), 1) * 4
+    right_axis = round(-joystick.get_axis(4), 1)
     
     if left_axis != 0 or right_axis != 0 or left_axis_rotation != 0:
       x += left_axis
