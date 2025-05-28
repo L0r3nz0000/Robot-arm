@@ -1,0 +1,61 @@
+body {
+  font-family: sans-serif;
+  background-color: #111;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.controller {
+  display: flex;
+  gap: 100px;
+  transform: rotate(90deg);
+  transform-origin: center;
+}
+
+.dpad {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+.dpad button {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.dpad .up { top: 0; left: 40px; }
+.dpad .down { bottom: 0; left: 40px; }
+.dpad .left { left: 0; top: 40px; }
+.dpad .right { right: 0; top: 40px; }
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.action-buttons button {
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  background-color: #444;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.8;
+}

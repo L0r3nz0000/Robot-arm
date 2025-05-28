@@ -21,7 +21,7 @@ long speed = 300;  // Velocità (step/secondo)
 
 const float L1_size = 13.2, L2_size = 14.6;
 const float scale_ratio = 2.5;
-const float scale_ratio_rotation = 5.4399;
+const float scale_ratio_rotation = 5.65;
 
 const int theta0_max_extension = 140;
 int theta1_max_extension;
@@ -32,9 +32,9 @@ bool is_moving = false;
 ArmPosition angles = (ArmPosition) {0, 0, 0};
 
 StepperMotor motors[3] = {
-  StepperMotor(STEPPER_0_STEP, STEPPER_0_DIR),
-  StepperMotor(STEPPER_1_STEP, STEPPER_1_DIR),
-  StepperMotor(STEPPER_2_STEP, STEPPER_2_DIR)
+  StepperMotor(STEPPER_0_STEP, STEPPER_0_DIR, scale_ratio),
+  StepperMotor(STEPPER_1_STEP, STEPPER_1_DIR, scale_ratio),
+  StepperMotor(STEPPER_2_STEP, STEPPER_2_DIR, scale_ratio_rotation)
 };
 
 void set_angles(ArmPosition target_angles) {
@@ -46,7 +46,7 @@ void set_angles(ArmPosition target_angles) {
     angles.theta0 = theta0_max_extension;
   }
 
-  if (target_angles.theta1 < target_angles.theta0 ){//107
+  if (target_angles.theta1 < target_angles.theta0 ){
     motors[1].setTargetDegrees(-(target_angles.theta0 - target_angles.theta1) * scale_ratio);
   } else {
     motors[1].setTargetDegrees(0);
@@ -70,7 +70,7 @@ void setup() {
   while (!Serial);
   Serial.println("Inizializzazione...");
   Serial.readStringUntil('\n');
-  Serial.setTimeout(10000000);
+  Serial.setTimeout(500);
 
   // Inizializza i motori
   for (int i = 0; i < 2; i++) {
@@ -110,30 +110,43 @@ void setup() {
   angles.theta1 = 0;
   angles.theta2 = 0;
 
-  moveTo({77, 63, 0});
+  moveTo({45, 63, 0});
   moveTo({0, 0, 0});
 }
 
 void loop() {
-  // Lettura asincrona dei dati seriali
   if (Serial.available()) {
-    String input = Serial.readStringUntil('\n');
-    int space1 = input.indexOf(' ');
-    int space2 = input.indexOf(' ', space1 + 1);
-
-    if (space1 != -1 && space2 != -1) {
-      int checksum = input.substring(0, space1).toInt();
-      float t0 = input.substring(space1 + 1, space2).toFloat();
-      float t1 = input.substring(space2 + 1, input.lastIndexOf(' ')).toFloat();
-      float t2 = input.substring(input.lastIndexOf(' ') + 1).toFloat();
-
-      if (checksum == (int)(t0 + t1 + t2)) {
-        // Nuovo comando ricevuto, aggiorna target e inizia il movimento
-        angles = { t0, t1, t2 };
-        set_angles(angles);
-        is_moving = true;
-      }
+    Serial.readStringUntil('\t');  // inizio comunicazione
+    float t0 = Serial.readStringUntil(' ').toInt();
+    float t1 = Serial.readStringUntil(' ').toInt();
+    float t2 = Serial.readStringUntil('\n').toInt();
+    
+    if (t0 != 0) {
+      motors[0].runContinuously(t0);
+    } else {
+      motors[0].stop();
     }
+
+    if (t1 != 0) {
+      motors[1].runContinuously(t1);
+    } else {
+      motors[1].stop();
+    }
+
+    if (t2 != 0) {
+      motors[2].runContinuously(t2);
+    } else {
+      motors[2].stop();
+    }
+
+    // Nuovo comando ricevuto, aggiorna target e inizia il movimento
+    is_moving = true;
+    Serial.print("theta0: ");
+    Serial.print(motors[0].getPositionDegree());
+    Serial.print(" theta1: ");
+    Serial.print(motors[1].getPositionDegree());
+    Serial.print(" theta2: ");
+    Serial.println(motors[2].getPositionDegree());
   }
 
   // Esegui il movimento se attivo

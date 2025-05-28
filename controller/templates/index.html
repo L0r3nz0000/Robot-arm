@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Controller PlayStation Style</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body data-server-ip="{{ server_ip }}">
+  <div class="controller">
+    <div class="dpad">
+      <button id=0 class="up" onclick="startCommand(0)">▲</button>
+      <button id=3 class="left" onclick="startCommand(3)">◄</button>
+      <button id=1 class="right" onclick="startCommand(1)">►</button>
+      <button id=2 class="down" onclick="startCommand(2)">▼</button>
+    </div>
+    <div class="action-buttons">
+      <button id=4 class="up" onclick="startCommand(4)">▲</button>
+      <button id=5 class="down" onclick="startCommand(5)">▼</button>
+    </div>
+  </div>
+  <script src="{{ url_for('static', filename='js/script.js') }}"> </script>
+</body>
+</html>

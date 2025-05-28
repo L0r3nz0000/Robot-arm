@@ -23,20 +23,10 @@ try:
   ser = serial.Serial(PORT, BAUDRATE)
 except:
   print("Impossibile connettersi al robot")
-  
-x = 0.0
-y = 0.0
-z = 0.0
-
-running = True
-# (width, height) = (300, 200)
-# screen = pygame.display.set_mode((width, height))
-# pygame.display.set_caption("Controllo Robot")
-# screen.fill((255, 255, 255))
-# pygame.display.flip()
+  exit(1)
 
 try:
-  while running:
+  while True:
     pygame.event.pump()  # Necessario per aggiornare gli input
 
     left_axis_rotation = round(-joystick.get_axis(0), 1) * 4
