@@ -79,8 +79,8 @@ void setup() {
     motors[i].setAcceleration(8000);
   }
   motors[2].setMinSpeed(5);
-  motors[2].setMaxSpeed(100);
-  motors[2].setAcceleration(8000);
+  motors[2].setMaxSpeed(1800);
+  motors[2].setAcceleration(12000);
 
 
   // Inizializza il pin di abilitazione

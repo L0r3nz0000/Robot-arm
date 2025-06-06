@@ -11,7 +11,7 @@ function sendCommand(id, action) {
     })
   }).then(res => res.json())
     .then(data => console.log("Risposta:", data))
-    .catch(err => console.error("Errore:", err));
+    .catch(err => alert("Errore:", err));
 }
 
 // Funzione per iniziare invio continuo
@@ -26,8 +26,6 @@ function stopCommand(id) {
 
 // Aggiunge listener a ogni bottone
 document.querySelectorAll("button").forEach(button => {
-  const command = button.dataset.command;
-
   // Eventi mouse
   button.addEventListener("mousedown", () => startCommand(button.id));
   button.addEventListener("mouseup", () => stopCommand(button.id));

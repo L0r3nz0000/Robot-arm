@@ -20,6 +20,7 @@ body {
   position: relative;
   width: 120px;
   height: 120px;
+  user-select: none;
 }
 
 .dpad button {
@@ -32,6 +33,7 @@ body {
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  user-select: none;
 }
 
 .dpad .up { top: 0; left: 40px; }
