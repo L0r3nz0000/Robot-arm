@@ -4,7 +4,7 @@
 
 Questo progetto nasce da un’idea personale, realizzato interamente in autonomia con l’obiettivo di costruire un **braccio robotico a 3 gradi di libertà** utilizzando **stampa 3D** e componenti elettronici a bassissimo costo. Il sistema è pensato per essere controllato in **tempo reale** tramite diverse interfacce.
 
-![Braccio Robotico](media/robot_arm.jpeg)
+![Braccio Robotico](media/center.jpeg)
 
 ---
 
