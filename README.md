@@ -26,7 +26,8 @@ Questo progetto nasce da un’idea personale, realizzato interamente in autonomi
 - **Microcontrollore:** Arduino Uno €20
 - **Motori:** 3 × motori stepper NEMA17 €15 - €30
 - **Driver motori:** 3 × DRV8825 €3
-- **Scheda di controllo:** CNC Shield V3 per Arduino €5  
+- **Scheda di controllo:** CNC Shield V3 per Arduino €5
+- **Buzzer:** Buzzer passivo elegoo €1.5
 - **Alimentazione:** 12V tramite alimentatore esterno
 
 ### Totale: ~ €50
@@ -80,11 +81,10 @@ Il braccio è controllabile in **tempo reale** attraverso due modalità principa
 - ✅ Modalità autonoma programmabile (tramite cinematica inversa)
 ---
 
-## 📸 Demo
-
-### 📷 Foto del Braccio
-![Foto del braccio](media/closed.jpeg)
+### 📷 Scheda di controllo
+![Foto del braccio](media/side.jpeg)
 
 ### 🎥 Video dimostrativo (cliccare sull'immagine per aprire)
-[![Guarda il video](media/open.jpeg)](media/video.mp4)
+[![Guarda il video](media/open.jpeg)](https://github.com/L0r3nz0000/Robot-arm/raw/refs/heads/main/media/video.mp4)
+
 
