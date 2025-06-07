@@ -85,6 +85,6 @@ Il braccio è controllabile in **tempo reale** attraverso due modalità principa
 ### 📷 Foto del Braccio
 ![Foto del braccio](media/closed.jpeg)
 
-### 🎥 Video dimostrativo
+### 🎥 Video dimostrativo (cliccare sull'immagine per aprire)
 [![Guarda il video](media/open.jpeg)](media/video.mp4)
 
