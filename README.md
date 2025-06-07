@@ -62,8 +62,7 @@ Il braccio è controllabile in **tempo reale** attraverso due modalità principa
 ## 🧪 Test e Risultati
 
 ✅ Il braccio risponde ai comandi con **latenza minima** e **movimenti fluidi**  
-✅ Ogni motore compie il proprio arco di movimento con **precisione**  
-✅ La struttura supporta movimenti dinamici  
+✅ La precisione dei motori è molto alta, grazie ai driver che permettono microstep di 1/32 di step e per fare un giro completo dobbiamo fare 64 step, 64*32 = 2048 step per fare un giro completo, quindi otteniamo un'accuratezza di ~0.176 gradi
 
 ### Limiti attuali:
 
@@ -75,27 +74,17 @@ Il braccio è controllabile in **tempo reale** attraverso due modalità principa
 
 ## 🚀 Espansioni Future
 
-- ✅ Installazione di finecorsa e sensori di posizione  
+- ✅ Installazione di finecorsa o sensori di posizione  
 - ✅ Aggiunta di ulteriori gradi di libertà (es. **pinza terminale**)  
-- ✅ Integrazione con modulo wireless (ESP32 o Bluetooth)  
-- ✅ Controllo tramite app mobile o Wi-Fi remoto
-
+- ✅ Integrazione di un modulo wireless che permetta di lavorare in modo autonomo (ESP32 o modulo Bluetooth 5.0)  
+- ✅ Modalità autonoma programmabile (tramite cinematica inversa)
 ---
 
 ## 📸 Demo
 
 ### 📷 Foto del Braccio
-![Foto del braccio](media/robot_arm.jpg)
+![Foto del braccio](media/closed.jpeg)
 
 ### 🎥 Video dimostrativo
-[![Guarda il video](media/robot_arm_video_thumbnail.jpg)](media/robot_arm_demo.mp4)
-
-> **Nota:** Per visualizzare correttamente le immagini e i video su GitHub:
-> - Inserisci le immagini e i video nella cartella `media/` della repo.
-> - Se usi Git LFS per i video (`.mp4`), assicurati che sia configurato su GitHub.
-> - Per GitHub Pages o visualizzazione browser-friendly, considera caricare il video su YouTube e linkarlo direttamente.
-
----
-
-## 📂 Struttura della Repository (consigliata)
+[![Guarda il video](media/open.jpeg)](media/video.mp4)
 
